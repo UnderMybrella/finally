@@ -7,6 +7,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven(url = "https://maven.brella.dev")
 }
 
 kotlin {
@@ -42,7 +43,17 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val jvmMain by getting
+        val jvmMain by getting {
+            dependencies {
+
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
+                implementation("dev.brella:kotlinx-serialisation-kvon:1.1.0")
+
+                implementation("io.ktor:ktor-client-core:1.6.0")
+                implementation("io.ktor:ktor-client-cio:1.6.0")
+                implementation("io.ktor:ktor-client-serialization:1.6.0")
+            }
+        }
         val jvmTest by getting
         val jsMain by getting
         val jsTest by getting
