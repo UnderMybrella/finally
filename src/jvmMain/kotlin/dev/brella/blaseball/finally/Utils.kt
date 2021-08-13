@@ -5,11 +5,16 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-inline operator fun JsonObjectBuilder.set(key: String, value: Int) = put(key, value)
-inline operator fun JsonObjectBuilder.set(key: String, value: Long) = put(key, value)
-inline operator fun JsonObjectBuilder.set(key: String, value: String) = put(key, value)
-inline operator fun JsonObjectBuilder.set(key: String, value: Boolean) = put(key, value)
+inline operator fun JsonObjectBuilder.set(key: String, value: Number?) = put(key, value)
+inline operator fun JsonObjectBuilder.set(key: String, value: String?) = put(key, value)
+inline operator fun JsonObjectBuilder.set(key: String, value: Boolean?) = put(key, value)
 inline operator fun JsonObjectBuilder.set(key: String, value: JsonElement) = put(key, value)
+
+inline fun extendJsonObject(base: Map<String, JsonElement>, builder: JsonObjectBuilder.() -> Unit): JsonObject =
+    buildJsonObject {
+        base.forEach { (k, v) -> put(k, v) }
+        builder()
+    }
 
 public inline fun JsonObject.getJsonObject(key: String) =
     getValue(key).jsonObject
@@ -50,6 +55,10 @@ public inline fun JsonObject.getLongOrNull(key: String) =
 
 public inline fun JsonObject.getDoubleOrNull(key: String) =
     (get(key) as? JsonPrimitive)?.doubleOrNull
+
+
+public inline fun JsonObject.getNumberOrNull(key: String): Number? =
+    (get(key) as? JsonPrimitive)?.run { intOrNull ?: longOrNull ?: doubleOrNull }
 
 public inline fun JsonObject.getDoubleOrNull(vararg keys: String) =
     keys.firstNotNullOfOrNull { (get(it) as? JsonPrimitive)?.doubleOrNull }

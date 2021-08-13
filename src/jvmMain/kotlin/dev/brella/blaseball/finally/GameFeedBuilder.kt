@@ -89,7 +89,7 @@ class GameFeedBuilder(
         this["gameTags"] = gameTags
         this["id"] = id
         this["metadata"] = metadata
-        this["nuts"] = 0
+        this["nuts"] = 0L
         this["phase"] = phase
         this["playerTags"] = playerTags
         this["season"] = season
@@ -135,5 +135,175 @@ class GameFeedBuilder(
         ) {
             this["play"] = play
             this["subPlay"] = subPlay
+        })
+
+    inline fun playerBattingForTeam(created: String, teamNickname: String, playerName: String, play: Int, subPlay: Int) =
+        playerBattingForTeam(created, play, subPlay, "$playerName batting for the $teamNickname.")
+    inline fun playerBattingForTeam(created: String, play: Int, subPlay: Int, description: String) =
+        feed.add(build(
+            category = 0,
+            type = 12,
+            description = description,
+            created = created
+        ) {
+            this["play"] = play
+            this["subPlay"] = subPlay
+        })
+
+    inline fun strike(created: String, play: Int, subPlay: Int, description: String) =
+        feed.add(build(
+            category = 0,
+            type = 13,
+            description = description,
+            created = created
+        ) {
+            this["play"] = play
+            this["subPlay"] = subPlay
+        })
+
+    inline fun strikesOut(created: String, play: Int, subPlay: Int, description: String) =
+        feed.add(build(
+            category = 0,
+            type = 6,
+            description = description,
+            created = created
+        ) {
+            this["play"] = play
+            this["subPlay"] = subPlay
+        })
+
+    inline fun strikesOutWillingly(created: String, play: Int, subPlay: Int, description: String) =
+        feed.add(build(
+            category = 0,
+            type = 6,
+            description = description,
+            created = created
+        ) {
+            this["play"] = play
+            this["subPlay"] = subPlay
+        })
+
+    inline fun foulBall(created: String, play: Int, subPlay: Int, description: String) =
+        feed.add(build(
+            category = 0,
+            type = 15,
+            description = description,
+            created = created
+        ) {
+            this["play"] = play
+            this["subPlay"] = subPlay
+        })
+
+    inline fun ball(created: String, play: Int, subPlay: Int, description: String) =
+        feed.add(build(
+            category = 0,
+            type = 14,
+            description = description,
+            created = created
+        ) {
+            this["play"] = play
+            this["subPlay"] = subPlay
+        })
+
+    inline fun flyout(id: String = UUID.randomUUID().toString(), created: String, play: Int, subPlay: Int, description: String, metadata: JsonObjectBuilder.() -> Unit) =
+        feed.add(build(
+            id = id,
+            category = 0,
+            type = 7,
+            description = description,
+            created = created
+        ) {
+            this["play"] = play
+            this["subPlay"] = subPlay
+
+            metadata()
+        })
+    inline fun groundOut(id: String = UUID.randomUUID().toString(), created: String, play: Int, subPlay: Int, description: String, metadata: JsonObjectBuilder.() -> Unit) =
+        feed.add(build(
+            id = id,
+            category = 0,
+            type = 7,
+            description = description,
+            created = created
+        ) {
+            this["play"] = play
+            this["subPlay"] = subPlay
+
+            metadata()
+        })
+    inline fun hitBall(id: String = UUID.randomUUID().toString(), created: String, play: Int, subPlay: Int, description: String, metadata: JsonObjectBuilder.() -> Unit) =
+        feed.add(build(
+            id = id,
+            category = 0,
+            type = 10,
+            description = description,
+            created = created
+        ) {
+            this["play"] = play
+            this["subPlay"] = subPlay
+
+            metadata()
+        })
+
+    inline fun flyoutSacrifice(
+        created: String,
+        teamNickname: String,
+        play: Int,
+        subPlay: Int,
+
+        parentID: String? = null,
+        awayEmoji: String? = null,
+        awayScore: Number? = null,
+        homeEmoji: String? = null,
+        homeScore: Number? = null,
+        ledger: String? = null,
+        update: String? = null
+    ) =
+        feed.add(build(
+            category = 0,
+            type = 209,
+            description = "The $teamNickname scored!",
+            created = created
+        ) {
+            this["play"] = play
+            this["subPlay"] = subPlay
+            parentID?.let { this["parent"] = it }
+            awayEmoji?.let { this["awayEmoji"] = it }
+            awayScore?.let { this["awayScore"] = it }
+            homeEmoji?.let { this["homeEmoji"] = it }
+            homeScore?.let { this["homeScore"] = it }
+            ledger?.let { this["ledger"] = it }
+            update?.let { this["update"] = it }
+        })
+
+    inline fun playerScored(
+        created: String,
+        teamNickname: String,
+        play: Int,
+        subPlay: Int,
+
+        parentID: String? = null,
+        awayEmoji: String? = null,
+        awayScore: Number? = null,
+        homeEmoji: String? = null,
+        homeScore: Number? = null,
+        ledger: String? = null,
+        update: String? = null
+    ) =
+        feed.add(build(
+            category = 0,
+            type = 209,
+            description = "The $teamNickname scored!",
+            created = created
+        ) {
+            this["play"] = play
+            this["subPlay"] = subPlay
+            parentID?.let { this["parent"] = it }
+            awayEmoji?.let { this["awayEmoji"] = it }
+            awayScore?.let { this["awayScore"] = it }
+            homeEmoji?.let { this["homeEmoji"] = it }
+            homeScore?.let { this["homeScore"] = it }
+            ledger?.let { this["ledger"] = it }
+            update?.let { this["update"] = it }
         })
 }

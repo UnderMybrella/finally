@@ -1,9 +1,10 @@
 plugins {
-    kotlin("multiplatform") version "1.5.10"
+    kotlin("multiplatform") version "1.5.20"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.20"
 }
 
-group = "me.under"
-version = "1.0-SNAPSHOT"
+group = "dev.brella.sibr"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
